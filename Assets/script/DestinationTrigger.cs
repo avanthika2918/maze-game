@@ -3,20 +3,40 @@ using UnityEngine;
 public class DestinationTrigger : MonoBehaviour
 {
     public GameTimer gameTimer;
-    public GameObject winPanel; // Optional win panel
+    public GameObject winPanel;
+
+    private bool hasWon = false;
+
+    void Start()
+    {
+        if (winPanel != null)
+        {
+            winPanel.SetActive(false);
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        Debug.Log("Triggered!");
+
+        if (!hasWon && other.CompareTag("Player"))
         {
-            gameTimer.StopTimer();
+            hasWon = true;
+
+            Debug.Log("Player reached destination!");
+
+            if (gameTimer != null)
+            {
+                gameTimer.StopTimer();
+            }
 
             if (winPanel != null)
             {
                 winPanel.SetActive(true);
             }
 
-            Time.timeScale = 0f; // Stop game when player wins
+            Time.timeScale = 0f;
         }
     }
+
 }
